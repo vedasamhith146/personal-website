@@ -10,7 +10,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Veda Samhith | AI Researcher',
+  title: 'Veda Samhith',
   description: 'Independent AI researcher exploring deep neural architectures and their mathematics.',
   generator: 'v0.app',
   icons: {
