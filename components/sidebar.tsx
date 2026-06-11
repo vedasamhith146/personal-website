@@ -1,6 +1,7 @@
 'use client';
 
 import { BookOpen, Code2, FileText } from 'lucide-react';
+import { useState } from 'react';
 
 const writingTopics = [
   'Tokenization',
@@ -19,22 +20,34 @@ const implementations = [
 ];
 
 export default function Sidebar() {
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
+  const SidebarItem = ({ label }: { label: string }) => (
+    <a
+      href="#"
+      onMouseEnter={() => setHoveredItem(label)}
+      onMouseLeave={() => setHoveredItem(null)}
+      className={`text-xs text-muted-foreground hover:text-foreground transition-all duration-300 cursor-pointer inline-block ${
+        hoveredItem === label ? 'translate-x-1 brightness-125' : ''
+      }`}
+    >
+      {label}
+    </a>
+  );
+
   return (
-    <aside className="w-64 border-r border-border bg-background p-8 min-h-screen sticky top-0 overflow-y-auto">
+    <aside className="w-80 border-r border-border bg-background p-8 min-h-screen sticky top-16 overflow-y-auto">
       <nav className="space-y-8 animate-slide-in-left">
         {/* Writing Section */}
         <div>
-          <div className="flex items-center gap-2 text-foreground mb-4">
+          <div className="flex items-center gap-2 text-foreground mb-4 hover:text-accent transition-colors duration-300 cursor-pointer">
             <FileText className="w-4 h-4" />
             <span className="text-sm font-medium">Writing</span>
           </div>
           <ul className="space-y-2 ml-6">
             {writingTopics.map((topic, idx) => (
-              <li
-                key={idx}
-                className="text-xs text-muted-foreground hover:text-accent transition-colors duration-300 cursor-pointer"
-              >
-                {topic}
+              <li key={idx}>
+                <SidebarItem label={topic} />
               </li>
             ))}
           </ul>
@@ -42,17 +55,14 @@ export default function Sidebar() {
 
         {/* Implementations Section */}
         <div>
-          <div className="flex items-center gap-2 text-foreground mb-4">
+          <div className="flex items-center gap-2 text-foreground mb-4 hover:text-accent transition-colors duration-300 cursor-pointer">
             <Code2 className="w-4 h-4" />
             <span className="text-sm font-medium">Implementations</span>
           </div>
           <ul className="space-y-2 ml-6">
             {implementations.map((impl, idx) => (
-              <li
-                key={idx}
-                className="text-xs text-muted-foreground hover:text-accent transition-colors duration-300 cursor-pointer"
-              >
-                {impl}
+              <li key={idx}>
+                <SidebarItem label={impl} />
               </li>
             ))}
           </ul>
@@ -60,7 +70,7 @@ export default function Sidebar() {
 
         {/* Notes Section */}
         <div>
-          <div className="flex items-center gap-2 text-foreground mb-4">
+          <div className="flex items-center gap-2 text-foreground mb-4 hover:text-accent transition-colors duration-300 cursor-pointer">
             <BookOpen className="w-4 h-4" />
             <span className="text-sm font-medium">Notes</span>
           </div>
@@ -69,12 +79,28 @@ export default function Sidebar() {
         {/* Social Links */}
         <div className="pt-8 border-t border-border space-y-3">
           <p className="text-xs text-muted-foreground">
-            <a href="https://twitter.com" className="hover:text-accent transition-colors">
+            <a
+              href="https://x.com/HiddenNeuron_14"
+              target="_blank"
+              rel="noopener noreferrer"
+              onMouseEnter={() => setHoveredItem('twitter')}
+              onMouseLeave={() => setHoveredItem(null)}
+              className={`hover:text-foreground transition-all duration-300 cursor-pointer inline-block ${
+                hoveredItem === 'twitter' ? 'translate-x-1 brightness-125' : ''
+              }`}
+            >
               Twitter
             </a>
           </p>
           <p className="text-xs text-muted-foreground">
-            <a href="#" className="hover:text-accent transition-colors">
+            <a
+              href="#"
+              onMouseEnter={() => setHoveredItem('ama')}
+              onMouseLeave={() => setHoveredItem(null)}
+              className={`hover:text-foreground transition-all duration-300 cursor-pointer inline-block ${
+                hoveredItem === 'ama' ? 'translate-x-1 brightness-125' : ''
+              }`}
+            >
               Ask me anything
             </a>
           </p>
