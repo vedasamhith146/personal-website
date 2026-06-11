@@ -71,15 +71,43 @@ export default function ResearchList({ activeTab = 'featured' }: ResearchListPro
   const [items, setItems] = useState<ResearchItem[]>(INITIAL_ITEMS);
   const [likedItems, setLikedItems] = useState<Set<number>>(new Set());
   const [isVisible, setIsVisible] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
+  // Load likes from localStorage on mount
   useEffect(() => {
+    const savedLikes = localStorage.getItem('research-likes');
+    if (savedLikes) {
+      try {
+        const likesData = JSON.parse(savedLikes);
+        const newLikedItems = new Set(likesData.likedIds);
+        const updatedItems = items.map(item => ({
+          ...item,
+          likes: likesData.likes[item.id] || 0,
+        }));
+        setItems(updatedItems);
+        setLikedItems(newLikedItems);
+      } catch (e) {
+        console.error('Failed to load likes from localStorage', e);
+      }
+    }
     setIsVisible(true);
   }, []);
 
+  // Save likes to localStorage whenever they change
+  useEffect(() => {
+    const likesData = {
+      likedIds: Array.from(likedItems),
+      likes: Object.fromEntries(items.map(item => [item.id, item.likes])),
+    };
+    localStorage.setItem('research-likes', JSON.stringify(likesData));
+  }, [likedItems, items]);
+
   const toggleLike = (id: number) => {
+    const isCurrentlyLiked = likedItems.has(id);
+    
     setItems((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, likes: likedItems.has(id) ? item.likes - 1 : item.likes + 1 } : item
+        item.id === id ? { ...item, likes: isCurrentlyLiked ? Math.max(0, item.likes - 1) : item.likes + 1 } : item
       )
     );
 
@@ -120,8 +148,14 @@ export default function ResearchList({ activeTab = 'featured' }: ResearchListPro
         <div
           key={item.id}
           onClick={() => recordView(item.id)}
-          className={`group border border-border rounded-lg p-6 hover:border-accent hover:bg-card transition-all duration-300 cursor-pointer ${
+          onMouseEnter={() => setHoveredCard(item.id)}
+          onMouseLeave={() => setHoveredCard(null)}
+          className={`group border border-border rounded-lg p-6 transition-all duration-300 cursor-pointer ${
             isVisible ? 'animate-fade-in-up' : 'opacity-0'
+          } ${
+            hoveredCard === item.id
+              ? 'border-accent bg-card shadow-lg translate-y-[-2px]'
+              : 'bg-background/40'
           }`}
           style={{
             animationDelay: `${item.delay * 100}ms`,
@@ -150,7 +184,7 @@ export default function ResearchList({ activeTab = 'featured' }: ResearchListPro
                   e.stopPropagation();
                   toggleLike(item.id);
                 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-card border border-border hover:border-accent hover:bg-border transition-all duration-300 group/like"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-card border border-border hover:border-accent transition-all duration-300 group/like"
               >
                 <Heart
                   size={18}
