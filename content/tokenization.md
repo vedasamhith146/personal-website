@@ -240,7 +240,7 @@ Similarly, we can do this for the other words in the corpus.
 Now, we calculate the expected count of each token in the vocabulary.  
   
 To compute these expected counts, we use the following formula. This step is called the E-step (Expectation Step):  
-![Formally, define freq(t) as the expected count of token t summed over all possible](Attachments/3F6D8CC7-EF3D-42C1-B2B9-AC5E3D61FB3B.png)  
+![Formally, define freq(t) as the expected count of token t summed over all possible](3F6D8CC7-EF3D-42C1-B2B9-AC5E3D61FB3B.png)  
 **Let us calculate freq(hug).**  
   
 To calculate this, we need to look at all possible segmentations of all the words in the corpus and check whether the token **“hug”** appears in a given segmentation. If it does, we take the probability of that segmentation and add it to the total. By summing these probabilities across all segmentations of all words, we obtain the **expected count** (or frequency) of the token.  
@@ -273,7 +273,7 @@ freq(hug) = 0.811 + 0.065 = 0.876
 ```
   
 We perform the same calculation for every token in the initial vocabulary. Once we have the expected counts of all tokens, we update their probabilities using:   
-![P(token) = frea(token)](Attachments/A3A7ACE4-E275-4EC1-B305-FEF55DF86A05.png)  
+![P(token) = frea(token)](A3A7ACE4-E275-4EC1-B305-FEF55DF86A05.png)  
 The probabilities obtained from this step become the updated token probabilities. This step is called the **M-step** (Maximization Step).  
   
 Notice that we obtained:  
@@ -321,11 +321,11 @@ First, we calculate the likelihood of the corpus.
 After EM convergence, we obtain the probabilities of all tokens in the vocabulary. Using these probabilities, we calculate the probability of every possible segmentation of each word and sum them together. We call this value **P(word)**.  
   
 The likelihood of the corpus is then calculated as:  
-![-log (word)](Attachments/9EAFA202-DF6D-4CDD-8278-023C9C2F2814.png)  
+![-log (word)](9EAFA202-DF6D-4CDD-8278-023C9C2F2814.png)  
   
 Now, we remove a token from the vocabulary and calculate the likelihood of the corpus again. We repeat this process for every token in the vocabulary and compute an importance score for each token:  
   
-![score(t) = Lwithout & - Lwith t](Attachments/ABC1ED28-CFC8-46E0-81B8-EA8E71F68D0D.png)  
+![score(t) = Lwithout & - Lwith t](ABC1ED28-CFC8-46E0-81B8-EA8E71F68D0D.png)  
   
 A smaller score means that removing the token does not significantly affect the corpus likelihood, indicating that the token is less important and can be removed from the vocabulary.  
   

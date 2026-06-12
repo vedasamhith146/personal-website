@@ -36,6 +36,15 @@ const mdComponents = {
     />
   ),
 
+  a: ({ node, ...props }: any) => (
+  <a
+    className="text-blue-400 underline hover:text-blue-300"
+    target="_blank"
+    rel="noopener noreferrer"
+    {...props}
+  />
+),
+
   p: ({ ...props }: any) => (
     <p
       className="leading-8 text-foreground text-lg mb-6"
@@ -68,42 +77,36 @@ const mdComponents = {
     />
   ),
 
-  pre: ({ ...props }: any) => (
-    <pre
-      className="rounded-xl overflow-x-auto p-5 my-6 border border-border bg-muted"
-      {...props}
-    />
-  ),
+  pre: ({ node, ...props }: any) => (
+  <pre
+    className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 my-6 overflow-x-auto"
+    {...props}
+  />
+),
 
-  code: ({ className, children, ...props }: any) => {
-    const isBlock = className?.includes("language-");
-
-    if (isBlock) {
-      return (
-        <code
-          className={className}
-          {...props}
-        >
-          {children}
-        </code>
-      );
-    }
-
+  code: ({ node, inline, ...props }: any) => {
+  if (inline) {
     return (
       <code
-        className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono"
+        className="bg-zinc-800 px-1.5 py-0.5 rounded text-red-300 font-mono"
         {...props}
-      >
-        {children}
-      </code>
+      />
     );
-  },
+  }
+
+  return (
+    <code
+      className="font-mono text-zinc-100"
+      {...props}
+    />
+  );
+},
 
   img: ({ src, alt }: any) => (
     <img
       src={src}
       alt={alt}
-      className="rounded-xl border border-border my-8 mx-auto"
+      className="rounded-xl border border-zinc-800 my-8 w-full"
     />
   ),
 
@@ -168,9 +171,6 @@ const mdComponents = {
         <main className="max-w-4xl mx-auto px-6 py-16">
           <article>
             {/* Meta */}
-            <div className="flex items-center gap-6 text-sm text-muted-foreground mb-12 pb-8 border-b border-border">
-              <span>Independent Research</span>
-            </div>
 
             {/* Body Content */}
             <div className="prose prose-invert max-w-none space-y-6 text-foreground">
