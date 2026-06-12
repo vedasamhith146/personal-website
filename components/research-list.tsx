@@ -2,6 +2,7 @@
 
 import { Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 interface ResearchItem {
   id: number;
@@ -10,6 +11,7 @@ interface ResearchItem {
   views: number;
   likes: number;
   delay: number;
+  slug?: string; // Optional slug for dedicated page routes
 }
 
 const INITIAL_ITEMS: ResearchItem[] = [
@@ -20,6 +22,7 @@ const INITIAL_ITEMS: ResearchItem[] = [
     views: 0,
     likes: 0,
     delay: 0,
+    slug: 'tokenization',
   },
   {
     id: 2,
@@ -144,23 +147,27 @@ export default function ResearchList({ activeTab = 'featured' }: ResearchListPro
 
   return (
     <div className="space-y-4">
-      {displayItems.map((item) => (
-        <div
-          key={item.id}
-          onClick={() => recordView(item.id)}
-          onMouseEnter={() => setHoveredCard(item.id)}
-          onMouseLeave={() => setHoveredCard(null)}
-          className={`group border border-border rounded-lg p-6 transition-all duration-300 cursor-pointer ${
-            isVisible ? 'animate-fade-in-up' : 'opacity-0'
-          } ${
-            hoveredCard === item.id
-              ? 'border-accent bg-card shadow-lg translate-y-[-2px]'
-              : 'bg-background/40'
-          }`}
-          style={{
-            animationDelay: `${item.delay * 100}ms`,
-          }}
-        >
+      {displayItems.map((item) => {
+        const cardContent = (
+          <div
+            onClick={() => {
+              if (!item.slug) recordView(item.id);
+            }}
+            onMouseEnter={() => setHoveredCard(item.id)}
+            onMouseLeave={() => setHoveredCard(null)}
+            className={`group border border-border rounded-lg p-6 transition-all duration-300 ${
+              item.slug ? 'cursor-pointer' : ''
+            } ${
+              isVisible ? 'animate-fade-in-up' : 'opacity-0'
+            } ${
+              hoveredCard === item.id
+                ? 'border-accent bg-card shadow-lg translate-y-[-2px]'
+                : 'bg-background/40'
+            }`}
+            style={{
+              animationDelay: `${item.delay * 100}ms`,
+            }}
+          >
           <div className="flex items-start justify-between gap-6">
             {/* Left Content */}
             <div className="flex-1">
@@ -200,8 +207,18 @@ export default function ResearchList({ activeTab = 'featured' }: ResearchListPro
               </button>
             </div>
           </div>
-        </div>
-      ))}
+          </div>
+        );
+
+        // Wrap with Link if slug exists, otherwise render as plain div
+        return item.slug ? (
+          <Link key={item.id} href={`/writing/${item.slug}`}>
+            {cardContent}
+          </Link>
+        ) : (
+          <div key={item.id}>{cardContent}</div>
+        );
+      })}
     </div>
   );
 }
