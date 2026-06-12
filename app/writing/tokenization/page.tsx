@@ -1,9 +1,55 @@
-'use client';
-
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 export default function TokenizationPage() {
+  const content = readFileSync(join(process.cwd(), 'content', 'tokenization.md'), 'utf-8');
+
+  const mdComponents = {
+    h1: ({ node, ...props }: any) => (
+      <h1 className="text-4xl font-bold text-foreground mb-4 leading-tight" {...props} />
+    ),
+    h2: ({ node, ...props }: any) => (
+      <h2 className="text-2xl font-semibold text-foreground mt-8 mb-4" {...props} />
+    ),
+    h3: ({ node, ...props }: any) => (
+      <h3 className="text-xl font-semibold text-foreground mt-6 mb-3" {...props} />
+    ),
+    p: ({ node, ...props }: any) => (
+      <p className="leading-relaxed text-foreground" {...props} />
+    ),
+    ul: ({ node, ...props }: any) => (
+      <ul className="list-disc list-inside space-y-2 text-foreground" {...props} />
+    ),
+    ol: ({ node, ...props }: any) => (
+      <ol className="list-decimal list-inside space-y-2 text-foreground" {...props} />
+    ),
+    li: ({ node, ...props }: any) => (
+      <li className="leading-relaxed" {...props} />
+    ),
+    code: ({ node, inline, ...props }: any) => {
+      if (inline) {
+        return (
+          <code className="bg-muted px-1.5 py-0.5 rounded text-sm font-mono text-foreground" {...props} />
+        );
+      }
+      return (
+        <code className="bg-muted px-3 py-2 rounded text-sm font-mono text-foreground block overflow-x-auto" {...props} />
+      );
+    },
+    pre: ({ node, ...props }: any) => (
+      <pre className="bg-muted rounded-lg overflow-x-auto p-4 my-4 border border-border" {...props} />
+    ),
+    blockquote: ({ node, ...props }: any) => (
+      <blockquote className="border-l-4 border-muted-foreground pl-4 italic text-muted-foreground my-4" {...props} />
+    ),
+    hr: ({ node, ...props }: any) => (
+      <hr className="my-8 border-t border-border" {...props} />
+    ),
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Background Elements */}
@@ -35,11 +81,6 @@ export default function TokenizationPage() {
         {/* Content */}
         <main className="max-w-2xl mx-auto px-6 py-16">
           <article>
-            {/* Title */}
-            <h1 className="text-4xl font-bold text-foreground mb-4 leading-tight">
-              Tokenization
-            </h1>
-
             {/* Meta */}
             <div className="flex items-center gap-6 text-sm text-muted-foreground mb-12 pb-8 border-b border-border">
               <span>Independent Research</span>
@@ -47,42 +88,9 @@ export default function TokenizationPage() {
 
             {/* Body Content */}
             <div className="prose prose-invert max-w-none space-y-6 text-foreground">
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Tokenization is the foundational process in large language models where raw text is converted into discrete units called tokens that the model can process.
-              </p>
-
-              <section className="space-y-4">
-                <h2 className="text-2xl font-semibold text-foreground mt-8 mb-4">
-                  What are Tokens?
-                </h2>
-                <p className="leading-relaxed">
-                  Tokens are the atomic units of text processing in language models. They can represent individual characters, subwords, or words depending on the tokenization scheme used. Different models use different tokenization strategies—some use byte-pair encoding (BPE), others use WordPiece or SentencePiece.
-                </p>
-              </section>
-
-              <section className="space-y-4">
-                <h2 className="text-2xl font-semibold text-foreground mt-8 mb-4">
-                  Why Tokenization Matters
-                </h2>
-                <p className="leading-relaxed">
-                  The choice of tokenization directly impacts model efficiency, vocabulary size, and performance. A well-designed tokenizer can significantly reduce the number of tokens needed to represent text, which directly translates to computational efficiency and context window utilization.
-                </p>
-              </section>
-
-              <section className="space-y-4">
-                <h2 className="text-2xl font-semibold text-foreground mt-8 mb-4">
-                  Token Embeddings
-                </h2>
-                <p className="leading-relaxed">
-                  Once text is tokenized, each token is embedded into a high-dimensional vector space. These token embeddings serve as the initial input to the transformer model and encode the semantic meaning of each token in a learnable representation.
-                </p>
-              </section>
-
-              <div className="mt-12 pt-8 border-t border-border">
-                <p className="text-sm text-muted-foreground">
-                  This article is part of a larger exploration into the architectural components of modern language models.
-                </p>
-              </div>
+              <ReactMarkdown components={mdComponents}>
+                {content}
+              </ReactMarkdown>
             </div>
           </article>
         </main>
