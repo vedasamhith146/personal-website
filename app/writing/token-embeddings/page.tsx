@@ -19,7 +19,7 @@ export default function TokenEmbeddingsPage() {
 
       <div className="relative z-10">
         <header className="border-b border-border">
-          <div className="max-w-2xl mx-auto px-6 py-8">
+          <div className="max-w-[720px] mx-auto px-6 py-8">
             <Link
               href="/"
               className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300 mb-8"
@@ -30,15 +30,12 @@ export default function TokenEmbeddingsPage() {
           </div>
         </header>
 
-        <main className="max-w-2xl mx-auto px-6 py-16">
+        <main className="max-w-[720px] mx-auto px-6 py-16">
           <article>
             <h1 className="text-4xl font-bold text-foreground mb-4 leading-tight">
               What can we deduce from token embedding table after training
             </h1>
 
-            <div className="flex items-center gap-6 text-sm text-muted-foreground mb-12 pb-8 border-b border-border">
-              <span>Independent Research</span>
-            </div>
 
             <div className="prose prose-invert max-w-none space-y-6 text-foreground">
               <p className="text-lg text-muted-foreground leading-relaxed">
