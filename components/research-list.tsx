@@ -2,6 +2,7 @@
 
 import { Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 interface ResearchItem {
   id: number;
@@ -10,56 +11,72 @@ interface ResearchItem {
   views: number;
   likes: number;
   delay: number;
+  slug?: string; // Optional slug for dedicated page routes
 }
 
 const INITIAL_ITEMS: ResearchItem[] = [
   {
     id: 1,
+    title: 'Tokenization',
+    description: 'Breaking down text into tokens and understanding tokenization in language models.',
+    views: 0,
+    likes: 0,
+    delay: 0,
+    slug: 'tokenization',
+  },
+  {
+    id: 2,
     title: 'What can we deduce from token embedding table after training',
     description: 'Understanding token representations in large language models.',
     views: 0,
     likes: 0,
-    delay: 0,
+    delay: 1,
+    slug: 'token-embeddings',
   },
   {
-    id: 2,
+    id: 3,
     title: 'ALiBi',
     description: 'Attention with Linear Biases: A simple yet effective positional encoding.',
     views: 0,
     likes: 0,
-    delay: 1,
+    delay: 2,
+    slug: 'alibi',
   },
   {
-    id: 3,
+    id: 4,
     title: 'RoPE',
     description: 'Rotary Position Embedding and its advantages in transformer models.',
     views: 0,
     likes: 0,
-    delay: 2,
+    delay: 3,
+    slug: 'rope',
   },
   {
-    id: 4,
+    id: 5,
     title: 'Evolution of attention',
     description: 'How reasoning emerges in large language models.',
     views: 0,
     likes: 0,
-    delay: 3,
+    delay: 4,
+    slug: 'evolution-attention',
   },
   {
-    id: 5,
+    id: 6,
     title: 'Is multi-head attention really doing the job?',
     description: 'Alternative mechanisms to traditional attention.',
     views: 0,
     likes: 0,
-    delay: 4,
+    delay: 5,
+    slug: 'multi-head-attention',
   },
   {
-    id: 6,
+    id: 7,
     title: 'The journey of activation functions',
     description: 'Evolution of activation functions in neural networks.',
     views: 0,
     likes: 0,
-    delay: 5,
+    delay: 6,
+    slug: 'activation-functions',
   },
 ];
 
@@ -144,23 +161,27 @@ export default function ResearchList({ activeTab = 'featured' }: ResearchListPro
 
   return (
     <div className="space-y-4">
-      {displayItems.map((item) => (
-        <div
-          key={item.id}
-          onClick={() => recordView(item.id)}
-          onMouseEnter={() => setHoveredCard(item.id)}
-          onMouseLeave={() => setHoveredCard(null)}
-          className={`group border border-border rounded-lg p-6 transition-all duration-300 cursor-pointer ${
-            isVisible ? 'animate-fade-in-up' : 'opacity-0'
-          } ${
-            hoveredCard === item.id
-              ? 'border-accent bg-card shadow-lg translate-y-[-2px]'
-              : 'bg-background/40'
-          }`}
-          style={{
-            animationDelay: `${item.delay * 100}ms`,
-          }}
-        >
+      {displayItems.map((item) => {
+        const cardContent = (
+          <div
+            onClick={() => {
+              if (!item.slug) recordView(item.id);
+            }}
+            onMouseEnter={() => setHoveredCard(item.id)}
+            onMouseLeave={() => setHoveredCard(null)}
+            className={`group border border-border rounded-lg p-6 transition-all duration-300 ${
+              item.slug ? 'cursor-pointer' : ''
+            } ${
+              isVisible ? 'animate-fade-in-up' : 'opacity-0'
+            } ${
+              hoveredCard === item.id
+                ? 'border-accent bg-card shadow-lg translate-y-[-2px]'
+                : 'bg-background/40'
+            }`}
+            style={{
+              animationDelay: `${item.delay * 100}ms`,
+            }}
+          >
           <div className="flex items-start justify-between gap-6">
             {/* Left Content */}
             <div className="flex-1">
@@ -200,8 +221,18 @@ export default function ResearchList({ activeTab = 'featured' }: ResearchListPro
               </button>
             </div>
           </div>
-        </div>
-      ))}
+          </div>
+        );
+
+        // Wrap with Link if slug exists, otherwise render as plain div
+        return item.slug ? (
+          <Link key={item.id} href={`/writing/${item.slug}`}>
+            {cardContent}
+          </Link>
+        ) : (
+          <div key={item.id}>{cardContent}</div>
+        );
+      })}
     </div>
   );
 }

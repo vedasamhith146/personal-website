@@ -2,15 +2,16 @@
 
 import { BookOpen, Code2, FileText } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
 
 const writingTopics = [
-  'Tokenization',
-  'What can we deduce from token embedding table after training',
-  'ALiBi',
-  'RoPE',
-  'Evolution of attention',
-  'Is multi-head attention really doing the job?',
-  'The journey of activation functions',
+  { label: 'Tokenization', slug: 'tokenization' },
+  { label: 'What can we deduce from token embedding table after training', slug: 'token-embeddings' },
+  { label: 'ALiBi', slug: 'alibi' },
+  { label: 'RoPE', slug: 'rope' },
+  { label: 'Evolution of attention', slug: 'evolution-attention' },
+  { label: 'Is multi-head attention really doing the job?', slug: 'multi-head-attention' },
+  { label: 'The journey of activation functions', slug: 'activation-functions' },
 ];
 
 const implementations = [
@@ -20,15 +21,45 @@ const implementations = [
 ];
 
 export default function Sidebar() {
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [hoveredWritingItem, setHoveredWritingItem] = useState<string | null>(null);
+  const [hoveredImplementationItem, setHoveredImplementationItem] = useState<string | null>(null);
+  const [hoveredSocialItem, setHoveredSocialItem] = useState<string | null>(null);
 
-  const SidebarItem = ({ label }: { label: string }) => (
+  const WritingItem = ({ label, slug }: { label: string; slug: string }) => (
+    <Link
+      href={`/writing/${slug}`}
+      onMouseEnter={() => setHoveredWritingItem(label)}
+      onMouseLeave={() => setHoveredWritingItem(null)}
+      className={`text-xs text-muted-foreground hover:text-foreground transition-all duration-300 cursor-pointer inline-block ${
+        hoveredWritingItem === label ? 'translate-x-1 brightness-125' : ''
+      }`}
+    >
+      {label}
+    </Link>
+  );
+
+  const ImplementationItem = ({ label }: { label: string }) => (
     <a
       href="#"
-      onMouseEnter={() => setHoveredItem(label)}
-      onMouseLeave={() => setHoveredItem(null)}
+      onMouseEnter={() => setHoveredImplementationItem(label)}
+      onMouseLeave={() => setHoveredImplementationItem(null)}
       className={`text-xs text-muted-foreground hover:text-foreground transition-all duration-300 cursor-pointer inline-block ${
-        hoveredItem === label ? 'translate-x-1 brightness-125' : ''
+        hoveredImplementationItem === label ? 'translate-x-1 brightness-125' : ''
+      }`}
+    >
+      {label}
+    </a>
+  );
+
+  const SocialItem = ({ label, href }: { label: string; href: string }) => (
+    <a
+      href={href}
+      target={href.startsWith('http') ? '_blank' : undefined}
+      rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+      onMouseEnter={() => setHoveredSocialItem(label)}
+      onMouseLeave={() => setHoveredSocialItem(null)}
+      className={`hover:text-foreground transition-all duration-300 cursor-pointer inline-block ${
+        hoveredSocialItem === label ? 'translate-x-1 brightness-125' : ''
       }`}
     >
       {label}
@@ -47,7 +78,7 @@ export default function Sidebar() {
           <ul className="space-y-2 ml-6">
             {writingTopics.map((topic, idx) => (
               <li key={idx}>
-                <SidebarItem label={topic} />
+                <WritingItem label={topic.label} slug={topic.slug} />
               </li>
             ))}
           </ul>
@@ -62,7 +93,7 @@ export default function Sidebar() {
           <ul className="space-y-2 ml-6">
             {implementations.map((impl, idx) => (
               <li key={idx}>
-                <SidebarItem label={impl} />
+                <ImplementationItem label={impl} />
               </li>
             ))}
           </ul>
@@ -79,30 +110,10 @@ export default function Sidebar() {
         {/* Social Links */}
         <div className="pt-8 border-t border-border space-y-3">
           <p className="text-xs text-muted-foreground">
-            <a
-              href="https://x.com/HiddenNeuron_14"
-              target="_blank"
-              rel="noopener noreferrer"
-              onMouseEnter={() => setHoveredItem('twitter')}
-              onMouseLeave={() => setHoveredItem(null)}
-              className={`hover:text-foreground transition-all duration-300 cursor-pointer inline-block ${
-                hoveredItem === 'twitter' ? 'translate-x-1 brightness-125' : ''
-              }`}
-            >
-              Twitter
-            </a>
+            <SocialItem label="Twitter" href="https://x.com/HiddenNeuron_14" />
           </p>
           <p className="text-xs text-muted-foreground">
-            <a
-              href="#"
-              onMouseEnter={() => setHoveredItem('ama')}
-              onMouseLeave={() => setHoveredItem(null)}
-              className={`hover:text-foreground transition-all duration-300 cursor-pointer inline-block ${
-                hoveredItem === 'ama' ? 'translate-x-1 brightness-125' : ''
-              }`}
-            >
-              Ask me anything
-            </a>
+            <SocialItem label="Ask me anything" href="#" />
           </p>
         </div>
       </nav>
