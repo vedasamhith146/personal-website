@@ -216,7 +216,7 @@ We generate all possible segmentations of every word and score them using the to
 [hug] : P([hug])=0.071
 [h] [ug] : P([h][ug])=P([h])P([ug])= 0.071 * 0.107= 0.0076
 [hu] [g] : P([hu][g])=P([hu])P([g])= 0.071 * 0.107= 0.0076
-[h] [u] [g] : P([h][u][g])= 0.071*0.178*0.107 ￼
+[h] [u] [g] : P([h][u][g])= 0.071 * 0.178 * 0.107= 0.00135
 Total : 0.08755
 Now Let's normalize these probabilities:
 [hug] -> 0.811
@@ -230,8 +230,8 @@ Now these are probabilities of a segmentations of certain words P (S | word)
 Now let’s also generate all the possible segmentations of the word “hugs”:  
 ```
 [hugs] : P([hugs])=0.036
-[hug] [s] : P([hug][s])￼P([hug])P([s])￼ 0.071 * 0.036 ￼
-[h] [ug] [s] : P([h][ug][s])￼P([h])P([ug])P([s])￼0.071*0.107*0.036￼
+[hug] [s] : P([hug][s])=P([hug])P([s])=0.071 * 0.036 = 0.002556
+[h] [ug] [s] : P([h][ug][s])=P([h])P([ug])P([s])=0.071*0.107*0.036 = 0.000273
 We can also generate more segmentations but for the sake of simplicity let's limit these now and normalize them so we will have probabilities of segementations of word 'hugs'
 
 ```
