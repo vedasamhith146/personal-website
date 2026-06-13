@@ -1,6 +1,5 @@
 import Sidebar from '@/components/sidebar';
 import Header from '@/components/header';
-import FeaturedSection from '@/components/featured-section';
 import ResearchList from '@/components/research-list';
 
 export default function Home() {
@@ -43,10 +42,7 @@ export default function Home() {
       <div className="flex relative z-10">
         <Sidebar />
         <main className="flex-1 border-l border-border">
-          <div className="max-w-5xl mx-auto px-12 py-16">
-            {/* Featured Section */}
-            <FeaturedSection />
-
+          <div className="max-w-5xl mx-auto px-12 pt-10 pb-16">
             <ResearchList />
           </div>
         </main>
