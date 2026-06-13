@@ -74,8 +74,6 @@ Moving on to the Research category, I reviewed the token {' science'}.
 ```
 For the token ' sciene' top-10 nearest neighbours and their similarity scores:
 
-```
-```
  1. ' Science'           sim=0.7612
  2. ' scientific'        sim=0.6240
  3. 'Science'            sim=0.6091
@@ -92,11 +90,9 @@ For the token ' sciene' top-10 nearest neighbours and their similarity scores:
   I also analyzed a token from the countries category: {’India’}.  
 ```
 For the token ' india' top-10 nearest neighbours and their similarity scores:
+
  1. 'India'              sim=0.7249
  2. ' China'             sim=0.5441
-
-```
-```
  3. ' Pakistan'          sim=0.5287
  4. ' Australia'         sim=0.5259
  5. ' Indian'            sim=0.5168
