@@ -113,7 +113,7 @@ export default function Sidebar() {
             <SocialItem label="Twitter" href="https://x.com/HiddenNeuron_14" />
           </p>
           <p className="text-xs text-muted-foreground">
-            <SocialItem label="Ask me anything" href="#" />
+            <SocialItem label="GitHub" href="https://github.com/vedasamhith146" />
           </p>
         </div>
       </nav>
