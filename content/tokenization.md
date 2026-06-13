@@ -2,6 +2,12 @@
 
 **This is the most important step: converting text into numbers. This decision effects how model handles code, math, emojis, and rare words.**
 
+Neural network models do not understand text as we do. They only know how to work with numbers. Therefore, if we want to build neural network based language models (LLMs), we need a way to convert text into numbers. This process is called “tokenization.”
+
+We use different tokenizers to achieve this. In this article, we will discuss two modern tokenizers, the BPE tokenizer and the Unigram tokenizer. Almost every LLM that we see uses one of these.
+
+Note that many people also mention SentencePiece, but SentencePiece is not a tokenizer of its own. It uses either BPE or Unigram underneath. We will discuss more about it in the SentencePiece section.
+
 So how do we convert text into numbers?
 
 We know that a computer doesn't understand text, right? Like, it only understands bits (0, 1). So how did we help the computer understand language?
@@ -47,27 +53,31 @@ We use UTF encodings to convert these Unicode code points into raw bytes. There 
 
 So there is a Unicode code point for different characters in different languages, and we can then use encodings to convert these code points into raw bytes. Each byte contains 8 bits (0s and 1s), which can finally be understood by the computer.
 
-Now we also have a way to convert text into numbers for neural network based text generation.
+This is how computers understand text in different languages and different symbols.
+
+So, we already have a way to convert text into numbers. We can use the same representation that computers use to process text. So why do we need all these tokenizers? We could directly convert text into byte values and pass them to neural network based language models.
+
+The reason is that we want these models to understand semantic relationships. For example, the model should understand that the words “dog” and “cat” belong to a similar category. To learn such semantic relationships, models need high dimensional vector representations.
+
+So, do we have an embedding vector for every word such as “dog”, “cat”, and every other word in the language? That would be difficult because there are a huge number of words in the English language. Furthermore, we want our models to be able to process out of vocabulary words, which are words that are not present in the model’s dictionary.
+
+For example, suppose the model’s dictionary contains embedding vectors for the subwords “un”, “happy”, and “ness”, but does not contain an embedding vector for the word “unhappiness”. The model can still process the word because it can be broken down into these smaller subwords.
+
+So we may have characters, subwords, and words in the model’s vocabulary. You might ask that it is enough to have characters in the vocabulary because everything can be broken down into characters. So, if we have an embedding vector for every character (English), (a-z), and (A-Z), we can process all the text, but this is computationally inefficient.
+
+Because the word “dog” now gets broken down into 3 characters, and each character has its respective embedding. But in modern neural network based language models, we use the attention mechanism, and it is the crux of the language model, where every token attends to every other token. As the number of tokens increases, the amount of computation required also increases. Moreover, the model has to learn the meaning of words from sequences of character tokens rather than receiving meaningful subwords or words directly. This makes learning semantic relationships more difficult. So we make the model’s job easier by looking for commonly occurring subwords and words and providing them with separate embedding vectors.
+
+We use the words “dog” and “cat” very often, so we provide embedding vectors for them. Now the model can more easily learn semantic relationships. But how do we decide which subwords and words get separate embedding vectors? This is decided by tokenizers.
 
 ## Byte Pair Encoding (BPE)
 
-However, raw bytes can become quite large. For example:
+This tokenizer starts with the 256 ID's in it's vocabulary i.e byte values (0-255). So each byte value from 0-255 is already in the tokenizer's vocabulary.
 
-😁 needs 4 bytes to represent:
+Following the idea from this original BPE [Gage's BPE paper](https://www.derczynski.com/papers/archive/BPE_Gage.pdf) paper, we repeatedly replace the most frequently occurring byte pairs with a new token ID, starting from 256, because a byte value can never be greater than 255.
 
-```
-[240, 159, 152, 129]
-```
+So, how do we build it? We first have a dataset that is used to train the tokenizer. In our vocabulary, we already have 256 IDs (0–255), corresponding to all possible byte values. We then increase the vocabulary size by replacing the most commonly occurring byte pairs with new IDs starting from 256. This process is repeated until the desired vocabulary size is reached.
 
-So even for small sentences, we will end up with many bytes. To decrease the byte-to-character ratio, we need a way to compress frequently occurring sequences into a more compact representation. That's a logical thing to do, right?
-
-One such compression algorithm is called **Byte Pair Encoding (BPE)**, introduced in the paper: [Gage's BPE paper](https://www.derczynski.com/papers/archive/BPE_Gage.pdf)
-
-Following the idea from this paper, we repeatedly replace the most frequently occurring byte pairs with a new token ID, starting from 256, because a byte value can never be greater than 255.
-
-Since we are building a tokenizer using the BPE algorithm, we call it a **Byte-Level BPE Tokenizer**. I specifically mention *Byte-Level* because there are many variants of the BPE algorithm, and earlier GPT models used Byte-Level BPE. So, how do we build it? We first have a dataset that is used to train the tokenizer. In our vocabulary, we already have 256 IDs (0–255), corresponding to all possible byte values. We then increase the vocabulary size by replacing the most commonly occurring byte pairs with new IDs starting from 256. This process is repeated until the desired vocabulary size is reached.
-
-First of all, the text in the dataset is converted into raw bytes (UTF-8). For example, the character 'e' is replaced with the number 101. So we get a list of integers from the input text. All the integers in this list will be less than or equal to 255 (≤ 255). That's because a byte can represent a maximum value of 255.
+First of all, the text in the dataset is converted into  bytes (UTF-8). For example, the character 'e' is replaced with the number 101. So we get a list of integers from the input text. All the integers in this list will be less than or equal to 255 (≤ 255). That's because a byte can represent a maximum value of 255.
 
 Now, all we need to do is find the most commonly occurring pairs. Let's say that, out of the given list of integers, the pair (101, 102) occurs most frequently. We then replace all occurrences of the pair (101, 102) with a new ID, and these new IDs start from 256.
 
@@ -93,7 +103,7 @@ So, we now have a tokenizer. But how do we use this tokenizer to convert text in
 
 For that, we use two functions: **Encode** and **Decode**.
 
-The Encode function first converts the input text into raw bytes; let's call them input bytes. The Encode function then checks whether there is any pair in the input bytes that exists in the dictionary obtained during tokenizer training. If such a pair exists, it replaces that pair with the corresponding ID.
+The Encode function first converts the input text into  bytes; let's call them input bytes. The Encode function then checks whether there is any pair in the input bytes that exists in the dictionary obtained during tokenizer training. If such a pair exists, it replaces that pair with the corresponding ID.
 
 We keep replacing all pairs in the input bytes that are present in the dictionary until there are no more replaceable pairs left.
 
@@ -397,7 +407,7 @@ for piece in current_vocab:
 
     F = freq(piece) / sum(freq)
 
-    delta[piece] = F * (log(P(piece)- Σ log(P'(alternative_token)))
+    delta[piece] = F * (log(P(piece)- Σ log(P'(alternative_token))))
 
 rank pieces by delta
 
