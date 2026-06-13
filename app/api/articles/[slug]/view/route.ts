@@ -3,10 +3,17 @@ import { getArticleDefinition, readStatsFile, writeStatsFile } from '@/lib/artic
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
-export async function POST(req: NextRequest, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const body = await req.json();
   const visitorId = typeof body?.visitorId === 'string' ? body.visitorId : null;
+
+  console.log('[API] POST /api/articles/' + slug + '/view request', {
+    method: req.method,
+    slug,
+    visitorId,
+    body,
+  });
 
   if (!visitorId) {
     return NextResponse.json({ error: 'Missing visitorId' }, { status: 400 });

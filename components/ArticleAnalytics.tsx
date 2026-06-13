@@ -156,11 +156,21 @@ export function ArticleAnalytics({ slug }: { slug: string }) {
         body: JSON.stringify({ visitorId }),
       });
 
+      const responseText = await response.text();
+      console.debug('[Analytics] like POST response', slug, response.status, responseText);
+
       if (!response.ok) {
-        throw new Error(`Failed to toggle like: ${response.status}`);
+        let errorDetails: string;
+        try {
+          const parsed = JSON.parse(responseText);
+          errorDetails = parsed.error || JSON.stringify(parsed);
+        } catch {
+          errorDetails = responseText;
+        }
+        throw new Error(`Failed to toggle like: ${response.status} ${errorDetails}`);
       }
 
-      const data = await response.json();
+      const data = JSON.parse(responseText);
       setStats({ views: data.views, likes: data.likes, liked: data.liked });
       console.debug('[Analytics] like toggle response', slug, data);
     } catch (error) {

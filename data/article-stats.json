@@ -1,8 +1,10 @@
 {
   "tokenization": {
     "views": 0,
-    "likes": 0,
-    "likedVisitorIds": [],
+    "likes": 1,
+    "likedVisitorIds": [
+      "test-visitor-123"
+    ],
     "viewRecords": {}
   },
   "token-embeddings": {

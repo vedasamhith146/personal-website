@@ -1,12 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getArticleDefinition, readStatsFile, writeStatsFile } from '@/lib/article-data';
 
-export async function POST(req: NextRequest, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function POST(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const body = await req.json();
   const visitorId = typeof body?.visitorId === 'string' ? body.visitorId : null;
 
+  console.log('[API] POST /api/articles/' + slug + '/like request', {
+    method: req.method,
+    slug,
+    visitorId,
+    body,
+  });
+
   if (!visitorId) {
+    console.error('[API] like missing visitorId', { slug, body });
     return NextResponse.json({ error: 'Missing visitorId' }, { status: 400 });
   }
 

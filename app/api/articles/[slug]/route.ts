@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getArticleDefinition, getPublicArticleStat, readStatsFile } from '@/lib/article-data';
 
-export async function GET(req: NextRequest, { params }: { params: { slug: string } }) {
-  const { slug } = params;
+export async function GET(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const visitorId = req.nextUrl.searchParams.get('visitorId');
+
+  console.log('[API] GET /api/articles/' + slug + ' request', {
+    method: req.method,
+    slug,
+    visitorId,
+  });
   const stats = await readStatsFile();
   const article = getArticleDefinition(slug);
 
