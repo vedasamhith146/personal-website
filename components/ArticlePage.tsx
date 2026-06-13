@@ -3,14 +3,13 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import { ArticleAnalytics } from './ArticleAnalytics';
 
 interface ArticlePageProps {
   children: ReactNode;
   slug: string;
 }
 
-export function ArticlePage({ children, slug }: ArticlePageProps) {
+export function ArticlePage({ children }: ArticlePageProps) {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <div className="fixed inset-0 pointer-events-none opacity-5">
@@ -38,7 +37,6 @@ export function ArticlePage({ children, slug }: ArticlePageProps) {
         </header>
 
         <main className="max-w-[720px] mx-auto px-6 py-16">
-          <ArticleAnalytics slug={slug} />
           <article id="article-content">{children}</article>
         </main>
       </div>

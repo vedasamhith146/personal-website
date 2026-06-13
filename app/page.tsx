@@ -1,19 +1,9 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import Sidebar from '@/components/sidebar';
 import Header from '@/components/header';
 import FeaturedSection from '@/components/featured-section';
 import ResearchList from '@/components/research-list';
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState('featured');
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       {/* Animated Grid Background */}
@@ -57,25 +47,7 @@ export default function Home() {
             {/* Featured Section */}
             <FeaturedSection />
 
-            {/* Tabs */}
-            <div className="flex gap-8 mt-16 border-b border-border mb-12">
-              {['Featured', 'Most read', 'Most liked'].map((tab) => (
-                <button
-                  key={tab.toLowerCase()}
-                  onClick={() => setActiveTab(tab.toLowerCase())}
-                  className={`pb-4 text-sm font-medium transition-all duration-300 whitespace-nowrap ${
-                    activeTab === tab.toLowerCase()
-                      ? 'text-foreground border-b-2 border-accent'
-                      : 'text-muted-foreground hover:text-foreground border-b-2 border-transparent'
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-
-            {/* Research List */}
-            {mounted && <ResearchList activeTab={activeTab} />}
+            <ResearchList />
           </div>
         </main>
       </div>
