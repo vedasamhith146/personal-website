@@ -24,9 +24,6 @@ First, I reviewed a token from the Health category: **{’ health’}**.
 For the token ' health' top-10 nearest neighbours and the their similarity scores:
  1. ' Health'            sim=0.7400
  2. 'health'             sim=0.5980
-
-```
-```
  3. 'Health'             sim=0.5476
  4. ' healthcare'        sim=0.5318
  5. ' medical'           sim=0.4873
