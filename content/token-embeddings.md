@@ -128,9 +128,6 @@ We use **’ science’** and **‘Science’** in different scenarios:
   
 ```
 Science is fascinating.
-
-```
-```
 I enjoy science.
 
 ```
