@@ -418,6 +418,5 @@ There is a paper called **"Byte Pair Encoding is Suboptimal for Language Model P
 
 There is also a paper by Meta AI called **"Byte Latent Transformer: Patches Scale Better Than Tokens"**, which attempts to eliminate the tokenization step altogether and process bytes more directly within the Transformer architecture. You can read that paper here: [Byte Latent Transformer: Patches Scale Better Than Tokens](https://arxiv.org/pdf/2412.09871)
 
-However, more research is needed before tokenization can be completely eliminated. For now, all modern LLMs rely on tokenizers. Personally, I am not a big fan of this step, but it is currently necessary.
-
+However, more research is needed before tokenization can be completely eliminated. For now, all modern LLMs rely on tokenizers.
 If you enjoyed this blog, you can follow me on X here: [@HiddenNeuron_14](https://x.com/HiddenNeuron_14)
