@@ -17,7 +17,7 @@ And guess what?
 The model actually learned this, and it has clearly separated these tokens into their respective categories. This is actually surprising.  
   
 ![PCA of GPT Token Embeddings](/token-embeddings/token-embedding-pca.png)  
-**2. **Next, I reviewed the top 10 nearest neighbours of tokens from different categories, and these are my observations:  
+**2.Next, I reviewed the top 10 nearest neighbours of tokens from different categories, and these are my observations:  
   
 First, I reviewed a token from the Health category: **{’ health’}**.  
 ```
