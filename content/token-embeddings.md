@@ -40,8 +40,6 @@ I then reviewed a token from the Education category: {' children'}.
 ```
 For the token ' children' top-10 nearest neighbours their similarity scores:
 
-```
-```
  1. ' Children'          sim=0.7333
  2. ' kids'              sim=0.7158
  3. 'Children'           sim=0.6899
