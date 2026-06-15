@@ -51,4 +51,4 @@ The authors finally state that their results are exciting, but they only explore
   
 This made me think a bit about discoveries in the AI space. If we remove positional encodings, the reduction in parameters is very small in the case of learned positional embeddings and essentially nonexistent in the case of RoPE, ALiBi, and sinusoidal encodings. In other words, the overall computational savings from removing positional encodings are minimal, and we cannot really trade that for a loss in model performance. On the other hand, if a discovery trades a small amount of accuracy for substantial computational savings, that could be a much more impactful contribution in this field.  
   
-Compute is the moat.  
+Compute is the real moat.  
