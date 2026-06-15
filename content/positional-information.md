@@ -16,7 +16,12 @@ Although we know that learned positional embeddings cannot extrapolate beyond th
 However, one thing I observed was that the model trained with **no positional encoding** extrapolated better than the model trained with **sinusoidal positional encoding**. This was really surprising.  
   
 Here is the perplexity versus context length plot for the different models:  
-![Sinusoidal](/positional-information/pos_2.png)  
+![Sinusoidal](/positional-information/pos_2.png) 
+
+Note that the model using learned positional embeddings cannot extrapolate beyond a context length of 128 because the training context length was only 128. You cannot see that line in the plot because it is overlapped with the RoPE and ALiBi curves.
+
+I thought, “Wow, I have discovered something new!” But guess what? I went on to search the internet to see if anyone else was supporting this idea. I found that there was actually an entire research paper on this topic titled [“Transformer Language Models without Positional Encodings Still Learn Positional Information.”](https://arxiv.org/pdf/2203.16634)
+
   
 So I went on to read the paper.  
   
@@ -38,6 +43,9 @@ different model sizes:
 ![Seq Length](/positional-information/pos_6.png)  
 They tested whether NoPos language models learn some form of positional information to compensate for the absence of explicit positional encoding. To do this, they probed each layer of the trained models for positional information. Specifically, they used the token’s hidden representation after each transformer layer, produced by the evaluated language model, and trained a 2-layer feedforward ReLU network to predict the absolute position (0–1023). They trained a separate probe for each layer and measured the mean absolute distance between the probe’s prediction and the token’s actual position. The following is the graph they obtained:  
 ![Learned](/positional-information/pos_7.png)  
+The NoPos model starts with no positional information in the first layer, but it becomes position-aware within four layers and appears to contain more positional information than ALiBi. By the middle layers, NoPos can predict absolute positional information as accurately as models with learned positional embeddings. Finally, all models shed a significant amount of positional information in the final layers.
+
+They also visualized the predictions of the probe and observed that it is most accurate at the beginning of the sequence but becomes fuzzier as it progresses.
 ![NoPos Probe Predictions](/positional-information/pos_8.png)  
 The authors finally state that their results are exciting, but they only explored language models in the 125M to 1.3B parameter range. They observed that as the parameter count increases, the gap between the NoPos method and the other positional encoding methods narrows. This trend leads them to believe that their findings may hold for even larger models. However, they also point out that the largest models today are more than 100 times larger than the models they experimented with, so the scaling trends they observed may not necessarily continue to hold at those scales. They further note that NoPos consistently performs slightly worse than models with learned positional encodings, even though the performance gap is very small.  
   
