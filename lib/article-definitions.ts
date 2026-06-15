@@ -58,7 +58,7 @@ export const ARTICLES: ArticleDefinition[] = [
   },
   {
     id: 8,
-    title: 'Can Transformer Language Models Without Positional Information Learn Positional Information?',
+    title: 'Can Transformer Language Models Without Explicit Positional Encoding Learn Positional Information?',
     description: 'Understanding whether Transformers can recover token order when positional signals are removed.',
     slug: 'positional-information',
     delay: 7,
