@@ -12,6 +12,7 @@ const writingTopics = [
   { label: 'Evolution of attention', slug: 'evolution-attention' },
   { label: 'Is multi-head attention really doing the job?', slug: 'multi-head-attention' },
   { label: 'The journey of activation functions', slug: 'activation-functions' },
+  { label: 'Can Transformer Language Models Without Positional Information Learn Positional Information?', slug: 'positional-information' },
 ];
 
 const implementations = [
