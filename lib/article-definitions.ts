@@ -4,6 +4,7 @@ export type ArticleDefinition = {
   description: string;
   slug: string;
   delay: number;
+  hidden?: boolean;
 };
 
 export const ARTICLES: ArticleDefinition[] = [
@@ -16,8 +17,8 @@ export const ARTICLES: ArticleDefinition[] = [
   },
   {
     id: 2,
-    title: 'What can we deduce from token embedding table after training',
-    description: 'Understanding token representations in large language models.',
+    title: 'How I Trained GPT-2 (124M) on FineWeb-Edu From Scratch',
+    description: 'Training GPT-2 on the FineWeb-Edu dataset and analyzing its token embeddings journey.',
     slug: 'token-embeddings',
     delay: 1,
   },
@@ -27,6 +28,7 @@ export const ARTICLES: ArticleDefinition[] = [
     description: 'Attention with Linear Biases: A simple yet effective positional encoding.',
     slug: 'alibi',
     delay: 2,
+    hidden: true,
   },
   {
     id: 4,
@@ -34,6 +36,7 @@ export const ARTICLES: ArticleDefinition[] = [
     description: 'Rotary Position Embedding and its advantages in transformer models.',
     slug: 'rope',
     delay: 3,
+    hidden: true,
   },
   {
     id: 5,
@@ -41,6 +44,7 @@ export const ARTICLES: ArticleDefinition[] = [
     description: 'How reasoning emerges in large language models.',
     slug: 'evolution-attention',
     delay: 4,
+    hidden: true,
   },
   {
     id: 6,
@@ -55,6 +59,7 @@ export const ARTICLES: ArticleDefinition[] = [
     description: 'Evolution of activation functions in neural networks.',
     slug: 'activation-functions',
     delay: 6,
+    hidden: true,
   },
   {
     id: 8,
@@ -64,3 +69,5 @@ export const ARTICLES: ArticleDefinition[] = [
     delay: 7,
   },
 ];
+
+export const VISIBLE_ARTICLES = ARTICLES.filter((article) => !article.hidden);

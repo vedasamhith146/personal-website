@@ -3,23 +3,15 @@
 import { BookOpen, Code2, FileText } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
-
-const writingTopics = [
-  { label: 'Tokenization', slug: 'tokenization' },
-  { label: 'What can we deduce from token embedding table after training', slug: 'token-embeddings' },
-  { label: 'ALiBi', slug: 'alibi' },
-  { label: 'RoPE', slug: 'rope' },
-  { label: 'Evolution of attention', slug: 'evolution-attention' },
-  { label: 'Is multi-head attention really doing the job?', slug: 'multi-head-attention' },
-  { label: 'The journey of activation functions', slug: 'activation-functions' },
-  { label: 'Can Transformer Language Models Without Explicit Positional Encoding Learn Positional Information?', slug: 'positional-information' },
-];
+import { VISIBLE_ARTICLES } from '@/lib/article-definitions';
 
 const implementations = [
   'RoPE',
   'ALiBi',
   'KV Cache',
 ];
+
+const showImplementations = false;
 
 export default function Sidebar() {
   const [hoveredWritingItem, setHoveredWritingItem] = useState<string | null>(null);
@@ -77,28 +69,29 @@ export default function Sidebar() {
             <span className="text-sm font-medium">Writing</span>
           </div>
           <ul className="space-y-2 ml-6">
-            {writingTopics.map((topic, idx) => (
-              <li key={idx}>
-                <WritingItem label={topic.label} slug={topic.slug} />
+            {VISIBLE_ARTICLES.map((topic) => (
+              <li key={topic.slug}>
+                <WritingItem label={topic.title} slug={topic.slug} />
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Implementations Section */}
-        <div>
-          <div className="flex items-center gap-2 text-foreground mb-4 hover:text-accent transition-colors duration-300 cursor-pointer">
-            <Code2 className="w-4 h-4" />
-            <span className="text-sm font-medium">Implementations</span>
+        {showImplementations && (
+          <div>
+            <div className="flex items-center gap-2 text-foreground mb-4 hover:text-accent transition-colors duration-300 cursor-pointer">
+              <Code2 className="w-4 h-4" />
+              <span className="text-sm font-medium">Implementations</span>
+            </div>
+            <ul className="space-y-2 ml-6">
+              {implementations.map((impl, idx) => (
+                <li key={idx}>
+                  <ImplementationItem label={impl} />
+                </li>
+              ))}
+            </ul>
           </div>
-          <ul className="space-y-2 ml-6">
-            {implementations.map((impl, idx) => (
-              <li key={idx}>
-                <ImplementationItem label={impl} />
-              </li>
-            ))}
-          </ul>
-        </div>
+        )}
 
         {/* Notes Section */}
         <div>

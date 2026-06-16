@@ -1,10 +1,10 @@
 import Link from 'next/link';
-import { ARTICLES } from '@/lib/article-definitions';
+import { VISIBLE_ARTICLES } from '@/lib/article-definitions';
 
 export default function ResearchList() {
   return (
     <div className="space-y-4">
-      {ARTICLES.map((item) => (
+      {VISIBLE_ARTICLES.map((item) => (
         <Link key={item.id} href={`/writing/${item.slug}`} className="group block">
           <div
             className="border border-border rounded-lg p-6 transition-all duration-300 cursor-pointer bg-background/40 hover:border-accent hover:bg-card hover:shadow-lg hover:-translate-y-1"
