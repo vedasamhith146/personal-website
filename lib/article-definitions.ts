@@ -68,6 +68,13 @@ export const ARTICLES: ArticleDefinition[] = [
     slug: 'positional-information',
     delay: 7,
   },
+  {
+    id: 9,
+    title: 'How i trained my own GPT-2(124M) on Fineweb-edu dataset',
+    description: 'A from-scratch walkthrough for training GPT-2 (124M) on FineWeb-Edu with practical insights.',
+    slug: 'how-i-trained-my-own-gpt-2-124m-on-fineweb-edu-dataset',
+    delay: 8,
+  },
 ];
 
 export const VISIBLE_ARTICLES = ARTICLES.filter((article) => !article.hidden);
