@@ -17,8 +17,8 @@ export const ARTICLES: ArticleDefinition[] = [
   },
   {
     id: 2,
-    title: 'How I Trained GPT-2 (124M) on FineWeb-Edu From Scratch',
-    description: 'Training GPT-2 on the FineWeb-Edu dataset and analyzing its token embeddings journey.',
+    title: 'What can we deduce from token embedding table after training',
+    description: 'Understanding token representations in large language models.',
     slug: 'token-embeddings',
     delay: 1,
   },

@@ -1,4 +1,4 @@
-# How I Trained GPT-2 (124M) on FineWeb-Edu From Scratch  
+# What can we deduce from token embedding table after training  
   
 I have trained a GPT-2-like model (124M) using GPT-2’s tokenizer on the FineWeb-Edu dataset on 6B tokens (11,500 steps) and achieved a validation loss of **3.1580** and a HellaSwag accuracy of **28.24**, whereas the original GPT-2 (124M) achieved a HellaSwag accuracy of **29.55**. My model only trained on 6B tokens, whereas, according to sources, the original GPT-2 was trained on 10B tokens.  
   
